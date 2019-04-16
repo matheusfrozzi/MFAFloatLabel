@@ -43,10 +43,10 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6C9F2CBEF5C4038812697354 /* Pods-MFAFloatLabel_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFAFloatLabel_Tests.debug.xcconfig"; path = "Target Support Files/Pods-MFAFloatLabel_Tests/Pods-MFAFloatLabel_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		860201077626C890733BBCB7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		993A2657F3364EBB1F18FDD0 /* MFAFloatLabel.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = MFAFloatLabel.podspec; path = ../MFAFloatLabel.podspec; sourceTree = "<group>"; };
+		860201077626C890733BBCB7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		993A2657F3364EBB1F18FDD0 /* MFAFloatLabel.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MFAFloatLabel.podspec; path = ../MFAFloatLabel.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E10B477D2BE3C911FF5A0D69 /* Pods-MFAFloatLabel_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFAFloatLabel_Tests.release.xcconfig"; path = "Target Support Files/Pods-MFAFloatLabel_Tests/Pods-MFAFloatLabel_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		ED458EEE5F3426B9AC26F9ED /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		ED458EEE5F3426B9AC26F9ED /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,7 +156,6 @@
 				6C9F2CBEF5C4038812697354 /* Pods-MFAFloatLabel_Tests.debug.xcconfig */,
 				E10B477D2BE3C911FF5A0D69 /* Pods-MFAFloatLabel_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,6 +226,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);

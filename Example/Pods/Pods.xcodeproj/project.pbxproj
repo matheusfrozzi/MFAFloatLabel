@@ -10,6 +10,8 @@
 		1B21D6FC7BE7F74DB40F6BB97A383103 /* Pods-MFAFloatLabel_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3250D11F31E8859513897C17F1D49162 /* Pods-MFAFloatLabel_Tests-dummy.m */; };
 		24D3A2A6A4A7B395B4AA4CB8E88F6B92 /* Pods-MFAFloatLabel_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2065F7CD428610D1B794959079E67E1D /* Pods-MFAFloatLabel_Example-dummy.m */; };
 		2FFF71032266284D0099131E /* MFAFloatLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFF71022266284C0099131E /* MFAFloatLabel.swift */; };
+		2FFF7108226629450099131E /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 2FFF7105226629450099131E /* .gitkeep */; };
+		2FFF7109226629450099131E /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 2FFF7107226629450099131E /* .gitkeep */; };
 		4F07BB35AB9A25BFD50E03E9577C0452 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
 		56A541D65554A68B57609BCA743900B8 /* MFAFloatLabel-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AB73FCF3C86F3DF906E452485243FFF5 /* MFAFloatLabel-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B6F3E2CE278ABF5990233F67E997DF0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
@@ -41,6 +43,8 @@
 		2065F7CD428610D1B794959079E67E1D /* Pods-MFAFloatLabel_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MFAFloatLabel_Example-dummy.m"; sourceTree = "<group>"; };
 		2CBA770918CE1FF9D0F4F7F3E8696DB3 /* Pods-MFAFloatLabel_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MFAFloatLabel_Example-umbrella.h"; sourceTree = "<group>"; };
 		2FFF71022266284C0099131E /* MFAFloatLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFAFloatLabel.swift; sourceTree = "<group>"; };
+		2FFF7105226629450099131E /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		2FFF7107226629450099131E /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		3250D11F31E8859513897C17F1D49162 /* Pods-MFAFloatLabel_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MFAFloatLabel_Tests-dummy.m"; sourceTree = "<group>"; };
 		330DE0AA188E8CDBB0AC628F8FF3F404 /* Pods-MFAFloatLabel_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MFAFloatLabel_Example.release.xcconfig"; sourceTree = "<group>"; };
 		391FA1791D4BD2C297060730194D2074 /* Pods-MFAFloatLabel_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MFAFloatLabel_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -115,6 +119,25 @@
 			path = "Target Support Files/Pods-MFAFloatLabel_Tests";
 			sourceTree = "<group>";
 		};
+		2FFF7104226629450099131E /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				2FFF71022266284C0099131E /* MFAFloatLabel.swift */,
+				2FFF7105226629450099131E /* .gitkeep */,
+			);
+			name = Classes;
+			path = MFAFloatLabel/Classes;
+			sourceTree = "<group>";
+		};
+		2FFF7106226629450099131E /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2FFF7107226629450099131E /* .gitkeep */,
+			);
+			name = Assets;
+			path = MFAFloatLabel/Assets;
+			sourceTree = "<group>";
+		};
 		47D75BC484822ECAA213CDB64A988BA4 /* Pods-MFAFloatLabel_Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,7 +176,8 @@
 		9BF429CDCB75EB5EA508572A3FCCF647 /* MFAFloatLabel */ = {
 			isa = PBXGroup;
 			children = (
-				2FFF71022266284C0099131E /* MFAFloatLabel.swift */,
+				2FFF7106226629450099131E /* Assets */,
+				2FFF7104226629450099131E /* Classes */,
 				73514E049EC878C017E4502640F4BEFD /* Pod */,
 				DAF7649F82FD387AA8095CC8E9F2237B /* Support Files */,
 			);
@@ -341,6 +365,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FFF7108226629450099131E /* .gitkeep in Resources */,
+				2FFF7109226629450099131E /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
