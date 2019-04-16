@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Uod-J0-pDC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Float Label Delegate-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="MFAFloatLabel_Example" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,11 +20,132 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Teste" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aRP-OC-58t" customClass="MFAFloatLabel" customModule="MFAFloatLabel">
+                                <rect key="frame" x="20" y="104" width="335" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="YIL-Pe-8PF"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="changeFontSizeOnWrite" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="addBorder" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.47045988350000001" green="0.72941176470000002" blue="0.15875479249999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="topSpacingFromPlaceholder">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="floatLabelDelegate" destination="vXZ-lx-hvc" id="T8w-I3-nzK"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="396-dO-Dbw" customClass="MFAFloatLabel" customModule="MFAFloatLabel">
+                                <rect key="frame" x="20" y="174" width="335" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="vlP-c8-ZJd"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="changeFontSizeOnWrite" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="addBorder" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.47045988350000001" green="0.72941176470000002" blue="0.15875479249999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="onlyNumbers" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="topSpacingFromPlaceholder">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="floatLabelDelegate" destination="vXZ-lx-hvc" id="dFu-iS-55p"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jXH-2m-hRc" customClass="MFAFloatLabel" customModule="MFAFloatLabel">
+                                <rect key="frame" x="20" y="244" width="335" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="wff-ZO-doI"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="icon" value="icon-check-disable"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="iconAtTrailing" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="addBorder" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="fontSizeCustom">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
+                                        <real key="value" value="26"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="changeFontSizeOnWrite" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="topSpacingFromPlaceholder">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="floatLabelDelegate" destination="vXZ-lx-hvc" id="0is-Nj-nTh"/>
+                                </connections>
+                            </textField>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="aRP-OC-58t" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="40" id="7h0-6Y-Pdg"/>
+                            <constraint firstItem="396-dO-Dbw" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" id="Lau-ac-hxF"/>
+                            <constraint firstItem="jXH-2m-hRc" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" id="URS-dV-6l2"/>
+                            <constraint firstAttribute="trailing" secondItem="aRP-OC-58t" secondAttribute="trailing" constant="20" id="YLU-GY-ehc"/>
+                            <constraint firstAttribute="trailing" secondItem="jXH-2m-hRc" secondAttribute="trailing" constant="20" id="feO-40-m9u"/>
+                            <constraint firstItem="396-dO-Dbw" firstAttribute="top" secondItem="aRP-OC-58t" secondAttribute="bottom" constant="20" id="pBp-jn-Pq3"/>
+                            <constraint firstItem="aRP-OC-58t" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" id="puZ-38-1ph"/>
+                            <constraint firstItem="jXH-2m-hRc" firstAttribute="top" secondItem="396-dO-Dbw" secondAttribute="bottom" constant="20" id="uKX-NW-T0h"/>
+                            <constraint firstAttribute="trailing" secondItem="396-dO-Dbw" secondAttribute="trailing" constant="20" id="vp3-Di-AT0"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="nH8-PQ-bFq"/>
+                    <connections>
+                        <outlet property="textFieldPhoneNumber" destination="396-dO-Dbw" id="bZB-UB-dxv"/>
+                        <outlet property="textFieldUsername" destination="jXH-2m-hRc" id="psX-w7-elS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1079.2" y="132.68365817091455"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4dq-Gs-Nkd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Uod-J0-pDC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="bXA-3E-lYf">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="vXZ-lx-hvc" kind="relationship" relationship="rootViewController" id="GTL-eT-OBc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lfq-AH-pBA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="255" y="133"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon-check-disable" width="26" height="26"/>
+    </resources>
 </document>

@@ -9,9 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B21D6FC7BE7F74DB40F6BB97A383103 /* Pods-MFAFloatLabel_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3250D11F31E8859513897C17F1D49162 /* Pods-MFAFloatLabel_Tests-dummy.m */; };
 		24D3A2A6A4A7B395B4AA4CB8E88F6B92 /* Pods-MFAFloatLabel_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2065F7CD428610D1B794959079E67E1D /* Pods-MFAFloatLabel_Example-dummy.m */; };
-		2FFF71032266284D0099131E /* MFAFloatLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFF71022266284C0099131E /* MFAFloatLabel.swift */; };
-		2FFF7108226629450099131E /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 2FFF7105226629450099131E /* .gitkeep */; };
-		2FFF7109226629450099131E /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 2FFF7107226629450099131E /* .gitkeep */; };
+		2FFF710D226636230099131E /* MFAFloatLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFF710C226636230099131E /* MFAFloatLabel.swift */; };
 		4F07BB35AB9A25BFD50E03E9577C0452 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
 		56A541D65554A68B57609BCA743900B8 /* MFAFloatLabel-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AB73FCF3C86F3DF906E452485243FFF5 /* MFAFloatLabel-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5B6F3E2CE278ABF5990233F67E997DF0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4607EFCA7C5F75397649E792E2AFCB /* Foundation.framework */; };
@@ -42,9 +40,7 @@
 		0F51565713AD6C27FE673B408509EB70 /* Pods-MFAFloatLabel_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MFAFloatLabel_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		2065F7CD428610D1B794959079E67E1D /* Pods-MFAFloatLabel_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MFAFloatLabel_Example-dummy.m"; sourceTree = "<group>"; };
 		2CBA770918CE1FF9D0F4F7F3E8696DB3 /* Pods-MFAFloatLabel_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MFAFloatLabel_Example-umbrella.h"; sourceTree = "<group>"; };
-		2FFF71022266284C0099131E /* MFAFloatLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFAFloatLabel.swift; sourceTree = "<group>"; };
-		2FFF7105226629450099131E /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		2FFF7107226629450099131E /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		2FFF710C226636230099131E /* MFAFloatLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MFAFloatLabel.swift; sourceTree = "<group>"; };
 		3250D11F31E8859513897C17F1D49162 /* Pods-MFAFloatLabel_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MFAFloatLabel_Tests-dummy.m"; sourceTree = "<group>"; };
 		330DE0AA188E8CDBB0AC628F8FF3F404 /* Pods-MFAFloatLabel_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MFAFloatLabel_Example.release.xcconfig"; sourceTree = "<group>"; };
 		391FA1791D4BD2C297060730194D2074 /* Pods-MFAFloatLabel_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MFAFloatLabel_Example-frameworks.sh"; sourceTree = "<group>"; };
@@ -122,8 +118,7 @@
 		2FFF7104226629450099131E /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2FFF71022266284C0099131E /* MFAFloatLabel.swift */,
-				2FFF7105226629450099131E /* .gitkeep */,
+				2FFF710C226636230099131E /* MFAFloatLabel.swift */,
 			);
 			name = Classes;
 			path = MFAFloatLabel/Classes;
@@ -132,7 +127,6 @@
 		2FFF7106226629450099131E /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				2FFF7107226629450099131E /* .gitkeep */,
 			);
 			name = Assets;
 			path = MFAFloatLabel/Assets;
@@ -338,15 +332,20 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
+				TargetAttributes = {
+					CCED67B9C3A76836CE0698EF75605B6E = {
+						LastSwiftMigration = 1020;
+					};
+				};
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			productRefGroup = EC2AC4E9D4E7C2BF3058E967C419DD83 /* Products */;
@@ -365,8 +364,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FFF7108226629450099131E /* .gitkeep in Resources */,
-				2FFF7109226629450099131E /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FFF71032266284D0099131E /* MFAFloatLabel.swift in Sources */,
+				2FFF710D226636230099131E /* MFAFloatLabel.swift in Sources */,
 				8665E06E87448988F08BA72353569543 /* MFAFloatLabel-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -632,6 +630,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FDC7D05DCFC97B22B3020CBD9AA7E0C5 /* MFAFloatLabel.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -652,7 +651,8 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -663,6 +663,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FDC7D05DCFC97B22B3020CBD9AA7E0C5 /* MFAFloatLabel.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -683,7 +684,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -695,6 +696,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

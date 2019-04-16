@@ -1,9 +1,9 @@
 //
 //  MFAFloatLabel.swift
-//  TagLivros
+//  MFAFloatLabel
 //
 //  Created by Matheus Frozzi Alberton on 24/12/16.
-//  Copyright © 2016 flockr. All rights reserved.
+//  Copyright © 2016 MFAFloatLabel. All rights reserved.
 //
 
 import UIKit
@@ -15,7 +15,9 @@ import UIKit
     @objc optional func textDidChange(text: String)
 }
 
-class MFAFloatLabel: UITextField, UITextFieldDelegate {
+public class MFAFloatLabel: UITextField, UITextFieldDelegate {
+
+    @IBOutlet open weak var floatLabelDelegate: MFAFloatLabelDelegate?
 
     @IBInspectable var placeholderColor: UIColor = .gray
     @IBInspectable var topSpacingFromPlaceholder: CGFloat = 6
@@ -27,15 +29,23 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
 
     @IBInspectable var changeFontSizeOnWrite: Bool = false
     @IBInspectable var addBorder: Bool = false
+    @IBInspectable public var borderColor: UIColor = .gray {
+        didSet {
+            bottomBorder.backgroundColor = borderColor
+        }
+    }
 
-    @IBInspectable var icon: UIImage?
-    @IBInspectable var iconIsRight: Bool = true
+    @IBInspectable public var icon: UIImage? {
+        didSet {
+            imageViewIcon.image = icon
+        }
+    }
+    @IBInspectable var iconAtTrailing: Bool = true
     @IBInspectable var iconSpacing: CGFloat = 8
     @IBInspectable var iconWidth: CGFloat = 12
     @IBInspectable var iconHeight: CGFloat = 12
 
-
-    override var text: String? {
+    override public var text: String? {
         set {
             super.text = newValue
             textDidChange()
@@ -48,8 +58,6 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
             if case .noFormatting = formatting {
                 return super.text
             } else {
-                // Because the UIControl target action is called before NSNotificaion (from which we fire our custom formatting), we need to
-                // force update finalStringWithoutFormatting to get the latest text. Otherwise, the last character would be missing.
                 textDidChange()
                 return finalStringWithoutFormatting
             }
@@ -67,7 +75,58 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
 
     var yConstraint: NSLayoutConstraint?
 
-    @IBOutlet open weak var customDelegate: MFAFloatLabelDelegate?
+    // MASK
+    public enum TextFieldFormatting {
+        case custom
+        case noFormatting
+    }
+
+    public var formattingPattern: String = "" {
+        didSet {
+            self.maxLength = formattingPattern.count
+        }
+    }
+
+    public var replacementChar: Character = "*"
+    public var secureTextReplacementChar: Character = "\u{25cf}"
+    @IBInspectable public var onlyNumbers: Bool = false
+    public var maxLength = 0
+    public var formatting : TextFieldFormatting = .noFormatting {
+        didSet {
+            switch formatting {
+            default:
+                self.maxLength = 0
+            }
+        }
+    }
+    public var formatedSecureTextEntry: Bool {
+        set {
+            _formatedSecureTextEntry = newValue
+            super.isSecureTextEntry = false
+        }
+        get {
+            return _formatedSecureTextEntry
+        }
+    }
+
+    deinit {
+        print("deinit")
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    public var finalStringWithoutFormatting : String {
+        return _textWithoutSecureBullets.keepOnlyDigits(isHexadecimal: !onlyNumbers)
+    }
+
+    // MARK: - INTERNAL
+    fileprivate var _formatedSecureTextEntry = false
+    fileprivate var _textWithoutSecureBullets = ""
+    fileprivate func registerForNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(textDidChange),
+                                               name: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"),
+                                               object: self)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -83,33 +142,35 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
         registerForNotifications()
     }
 
-    override func awakeFromNib() {
-
+    override public func awakeFromNib() {
         self.commonInit()
     }
 
-    override func draw(_ rect: CGRect) {
+    override public func draw(_ rect: CGRect) {
     }
 
     private func commonInit() {
         if addBorder {
-            bottomBorder = self.addBorder(withColor: UIColor(hexa: "#A7D0FF"), andEdge: .bottom)
+            bottomBorder = self.addBorder(withColor: borderColor, andEdge: .bottom)
         }
 
         if self.placeholder != nil {
             placeholderNew = self.placeholder
         }
-        
+
+        setupPlaceholderLabel()
         setupIcon()
-
+    }
+    
+    func setupPlaceholderLabel() {
         yConstraint = NSLayoutConstraint(item: placeholderLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
-
+        
         let titleConstraints: [NSLayoutConstraint] = [
             NSLayoutConstraint(item: placeholderLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: leftSpacing),
             NSLayoutConstraint(item: placeholderLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: leftSpacing),
             yConstraint!
         ]
-
+        
         placeholderLabel.numberOfLines = 0
         placeholderLabel.textAlignment = .left
         placeholderLabel.text = placeholderNew
@@ -117,8 +178,6 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
         placeholderLabel.textColor = placeholderColor
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.sizeToFit()
-
-        addConstraints(titleConstraints)
 
         if let fontNameCustom = fontNameCustom {
             if changeFontSizeOnWrite {
@@ -135,23 +194,24 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
         } else {
             placeholderLabel.font = self.font
         }
-
+        
         placeholderLabel.textColor = placeholderColor
-
+        
         if self.text != "" {
             _ = self.textFieldShouldBeginEditing(self)
         }
 
-        self.placeholder = ""
-        self.addSubview(placeholderLabel)
-        self.sendSubviewToBack(placeholderLabel)
+        placeholder = ""
+        addSubview(placeholderLabel)
+        addConstraints(titleConstraints)
+        sendSubviewToBack(placeholderLabel)
     }
 
     func setupIcon() {
         guard let icon = icon else { return }
         let alignConstraint: NSLayoutConstraint
 
-        if iconIsRight {
+        if iconAtTrailing {
             alignConstraint = NSLayoutConstraint(item: imageViewIcon, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -iconSpacing)
         } else {
             alignConstraint = NSLayoutConstraint(item: imageViewIcon, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: iconSpacing)
@@ -169,13 +229,19 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
         imageViewIcon.sizeToFit()
 
         imageViewIcon.image = icon
-        addConstraints(titleConstraints)
 
-        self.addSubview(imageViewIcon)
-        self.sendSubviewToBack(imageViewIcon)
+        addSubview(imageViewIcon)
+        addConstraints(titleConstraints)
+        sendSubviewToBack(imageViewIcon)
     }
 
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    public func setFormatting(_ formattingPattern: String, replacementChar: Character) {
+        self.formattingPattern = formattingPattern
+        self.replacementChar = replacementChar
+        self.formatting = .custom
+    }
+
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.layoutIfNeeded()
 
         UIView.animate(withDuration: 0.2, animations: { () -> Void in
@@ -189,10 +255,10 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
             self.layoutIfNeeded()
         })
         
-        return customDelegate?.textFieldShouldBeginEditing?(textField) ?? true
+        return floatLabelDelegate?.textFieldShouldBeginEditing?(textField) ?? true
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    public func textFieldDidEndEditing(_ textField: UITextField) {
         if self.text!.count <= 0 {
             self.layoutIfNeeded()
 
@@ -211,154 +277,26 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
             })
         }
 
-        customDelegate?.textFieldDidEndEditing?(textField)
-    }
-    
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-
-        return CGRect(x: bounds.origin.x + leftSpacing, y: bounds.origin.y + topSpacingFromPlaceholder, width: bounds.width, height: bounds.height)
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        
-        return CGRect(x: bounds.origin.x + leftSpacing, y: bounds.origin.y + topSpacingFromPlaceholder, width: bounds.width, height: bounds.height)
+        floatLabelDelegate?.textFieldDidEndEditing?(textField)
     }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        _ = customDelegate?.textFieldShouldReturn?(textField)
+    override public func textRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x + leftSpacing, y: bounds.origin.y + topSpacingFromPlaceholder, width: bounds.width - (rightSpacing), height: bounds.height)
+    }
+
+    override public func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x + leftSpacing, y: bounds.origin.y + topSpacingFromPlaceholder, width: bounds.width - (rightSpacing), height: bounds.height)
+    }
+
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        _ = floatLabelDelegate?.textFieldShouldReturn?(textField)
         return true
-    }
-    
-    // MASK
-    public enum TextFieldFormatting {
-        case uuid
-        case socialSecurityNumber
-        case phoneNumber
-        case cpf
-        case birth
-        case custom
-        case noFormatting
-    }
-
-    /**
-     Set a formatting pattern for a number and define a replacement string. For example: If formattingPattern would be "##-##-AB-##" and
-     replacement string would be "#" and user input would be "123456", final string would look like "12-34-AB-56"
-     */
-    public func setFormatting(_ formattingPattern: String, replacementChar: Character) {
-        self.formattingPattern = formattingPattern
-        self.replacementChar = replacementChar
-        self.formatting = .custom
-    }
-    
-    /**
-     A character which will be replaced in formattingPattern by a number
-     */
-    public var replacementChar: Character = "*"
-    
-    /**
-     A character which will be replaced in formattingPattern by a number
-     */
-    public var secureTextReplacementChar: Character = "\u{25cf}"
-    
-    /**
-     True if input number is hexadecimal eg. UUID
-     */
-    public var isHexadecimal: Bool {
-        return formatting == .uuid
-    }
-    
-    /**
-     Max length of input string. You don't have to set this if you set formattingPattern.
-     If 0 -> no limit.
-     */
-    public var maxLength = 0
-    
-    /**
-     Type of predefined text formatting. (You don't have to set this. It's more a future feature)
-     */
-    public var formatting : TextFieldFormatting = .noFormatting {
-        didSet {
-            switch formatting {
-                
-            case .socialSecurityNumber:
-                self.formattingPattern = "***-**-****"
-                self.replacementChar = "*"
-                
-            case .phoneNumber:
-                self.formattingPattern = "***-***-****"
-                self.replacementChar = "*"
-                
-            case .uuid:
-                self.formattingPattern = "********-****-****-****-************"
-                self.replacementChar = "*"
-                
-            case .cpf:
-                self.formattingPattern = "***.***.***-**"
-                self.replacementChar = "*"
-                
-            case .birth:
-                self.formattingPattern = "**/**/****"
-                self.replacementChar = "*"
-                
-            default:
-                self.maxLength = 0
-            }
-        }
-    }
-    
-    /**
-     String with formatting pattern for the text field.
-     */
-    public var formattingPattern: String = "" {
-        didSet {
-            self.maxLength = formattingPattern.count
-        }
-    }
-    
-    /**
-     Provides secure text entry but KEEPS formatting. All digits are replaced with the bullet character \u{25cf} .
-     */
-    public var formatedSecureTextEntry: Bool {
-        set {
-            _formatedSecureTextEntry = newValue
-            super.isSecureTextEntry = false
-        }
-        
-        get {
-            return _formatedSecureTextEntry
-        }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    /**
-     Final text without formatting characters (read-only)
-     */
-    public var finalStringWithoutFormatting : String {
-        return _textWithoutSecureBullets.keepOnlyDigits(isHexadecimal: isHexadecimal)
-    }
-    
-    // MARK: - INTERNAL
-    fileprivate var _formatedSecureTextEntry = false
-    
-    // if secureTextEntry is false, this value is similar to self.text
-    // if secureTextEntry is true, you can find final formatted text without bullets here
-    fileprivate var _textWithoutSecureBullets = ""
-
-    fileprivate func registerForNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(textDidChange),
-                                               name: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"),
-                                               object: self)
     }
 
     @objc public func textDidChange() {
         var superText: String { return super.text ?? "" }
-        customDelegate?.textDidChange?(text: superText)
+        floatLabelDelegate?.textDidChange?(text: superText)
 
-        // TODO: - Isn't there more elegant way how to do this?
         let currentTextForFormatting: String
         
         if superText.count > _textWithoutSecureBullets.count {
@@ -369,9 +307,9 @@ class MFAFloatLabel: UITextField, UITextFieldDelegate {
         } else {
             currentTextForFormatting = String(_textWithoutSecureBullets[..<_textWithoutSecureBullets.index(_textWithoutSecureBullets.startIndex, offsetBy: superText.count)])
         }
-        
+
         if formatting != .noFormatting && currentTextForFormatting.count > 0 && formattingPattern.count > 0 {
-            let tempString = currentTextForFormatting.keepOnlyDigits(isHexadecimal: isHexadecimal)
+            let tempString = currentTextForFormatting.keepOnlyDigits(isHexadecimal: !onlyNumbers)
             
             var finalText = ""
             var finalSecureText = ""
@@ -482,7 +420,6 @@ class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
     }
 
     override func awakeFromNib() {
-
         self.commonInit()
     }
 
@@ -490,7 +427,6 @@ class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
     }
 
     private func commonInit() {
-
         let titleConstraints: [NSLayoutConstraint] = [
             NSLayoutConstraint(item: placeholderLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: leftSpacing),
             NSLayoutConstraint(item: placeholderLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: leftSpacing),
@@ -537,7 +473,7 @@ extension String {
     
     func keepOnlyDigits(isHexadecimal: Bool) -> String {
         let ucString = self.uppercased()
-        let validCharacters = isHexadecimal ? "0123456789ABCDEF" : "0123456789"
+        let validCharacters = isHexadecimal ? "0123456789ABCDEFGHIJKLMNOPQRSTUVXYWZ" : "0123456789"
         let characterSet: CharacterSet = CharacterSet(charactersIn: validCharacters)
         let stringArray = ucString.components(separatedBy: characterSet.inverted)
         let allNumbers = stringArray.joined(separator: "")
@@ -547,7 +483,7 @@ extension String {
 
 
 // Helpers
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
     case let (l?, r?):
         return l < r
@@ -558,11 +494,59 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
+private func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
     case let (l?, r?):
         return l > r
     default:
         return rhs < lhs
+    }
+}
+
+extension UIView {
+
+    func addBorder(withColor color: UIColor? = nil, andEdge edge: UIRectEdge = .top, andSize size: CGFloat = 1) -> UIView {
+        let border = UIView()
+        
+        var titleConstraints: [NSLayoutConstraint] = []
+        
+        switch edge {
+        case .top, .bottom:
+            titleConstraints = [
+                NSLayoutConstraint(item: border, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: border, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: border, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: size)
+            ]
+            
+            if edge == .top {
+                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0))
+            } else {
+                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0))
+            }
+        case .left, .right:
+            titleConstraints = [
+                NSLayoutConstraint(item: border, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: border, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
+                NSLayoutConstraint(item: border, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: size)
+            ]
+            
+            if edge == .right {
+                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0))
+                
+            } else {
+                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0))
+            }
+        default:
+            break
+        }
+        
+        
+        border.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(border)
+        addConstraints(titleConstraints)
+        
+        border.backgroundColor = color ?? .white
+        
+        return border
     }
 }
