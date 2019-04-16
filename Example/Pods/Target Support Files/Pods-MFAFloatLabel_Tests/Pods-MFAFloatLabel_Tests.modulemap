@@ -1,0 +1,6 @@
+framework module Pods_MFAFloatLabel_Tests {
+  umbrella header "Pods-MFAFloatLabel_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

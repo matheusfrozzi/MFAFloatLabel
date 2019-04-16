@@ -1,0 +1,16 @@
+PODS:
+  - MFAFloatLabel (0.1.0)
+
+DEPENDENCIES:
+  - MFAFloatLabel (from `../`)
+
+EXTERNAL SOURCES:
+  MFAFloatLabel:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  MFAFloatLabel: 45a1059a2512a9b7b55f6881b65bae277c0766c4
+
+PODFILE CHECKSUM: dae72b905137a3530ae84bf218130ebcdfd08dd3
+
+COCOAPODS: 1.6.1
