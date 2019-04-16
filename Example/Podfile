@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'MFAFloatLabel_Example' do
+  pod 'MFAFloatLabel', :path => '../'
+
+  target 'MFAFloatLabel_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
