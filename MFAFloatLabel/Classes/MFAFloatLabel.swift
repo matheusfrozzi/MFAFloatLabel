@@ -16,17 +16,17 @@ import UIKit
 }
 
 public class MFAFloatLabel: UITextField, UITextFieldDelegate {
-
+    
     @IBOutlet open weak var floatLabelDelegate: MFAFloatLabelDelegate?
-
+    
     @IBInspectable var placeholderColor: UIColor = .gray
     @IBInspectable var topSpacingFromPlaceholder: CGFloat = 6
     @IBInspectable var leftSpacing: CGFloat = 8
     @IBInspectable var rightSpacing: CGFloat = 8
-
+    
     @IBInspectable var fontNameCustom: String!
     @IBInspectable var fontSizeCustom: CGFloat = 12
-
+    
     @IBInspectable var changeFontSizeOnWrite: Bool = false
     @IBInspectable var addBorder: Bool = false
     @IBInspectable public var borderColor: UIColor = .gray {
@@ -34,7 +34,7 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
             bottomBorder.backgroundColor = borderColor
         }
     }
-
+    
     @IBInspectable public var icon: UIImage? {
         didSet {
             imageViewIcon.image = icon
@@ -44,7 +44,7 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
     @IBInspectable var iconSpacing: CGFloat = 8
     @IBInspectable var iconWidth: CGFloat = 12
     @IBInspectable var iconHeight: CGFloat = 12
-
+    
     override public var text: String? {
         set {
             super.text = newValue
@@ -53,7 +53,6 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
                 _ = self.textFieldShouldBeginEditing(self)
             }
         }
-        
         get {
             if case .noFormatting = formatting {
                 return super.text
@@ -72,21 +71,21 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
     var bottomBorder: UIView = UIView()
     var placeholderLabel = UILabel()
     var imageViewIcon = UIImageView()
-
+    
     var yConstraint: NSLayoutConstraint?
-
+    
     // MASK
     public enum TextFieldFormatting {
         case custom
         case noFormatting
     }
-
+    
     public var formattingPattern: String = "" {
         didSet {
             self.maxLength = formattingPattern.count
         }
     }
-
+    
     public var replacementChar: Character = "*"
     public var secureTextReplacementChar: Character = "\u{25cf}"
     @IBInspectable public var onlyNumbers: Bool = false
@@ -108,16 +107,16 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
             return _formatedSecureTextEntry
         }
     }
-
+    
     deinit {
         print("deinit")
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     public var finalStringWithoutFormatting : String {
         return _textWithoutSecureBullets.keepOnlyDigits(isHexadecimal: !onlyNumbers)
     }
-
+    
     // MARK: - INTERNAL
     fileprivate var _formatedSecureTextEntry = false
     fileprivate var _textWithoutSecureBullets = ""
@@ -127,47 +126,65 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
                                                name: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"),
                                                object: self)
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         delegate = self
         registerForNotifications()
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-
+        
         delegate = self
         registerForNotifications()
     }
-
+    
     override public func awakeFromNib() {
         self.commonInit()
     }
-
+    
     override public func draw(_ rect: CGRect) {
     }
-
+    
     private func commonInit() {
         if addBorder {
             bottomBorder = self.addBorder(withColor: borderColor, andEdge: .bottom)
         }
-
+        
         if self.placeholder != nil {
             placeholderNew = self.placeholder
         }
-
+        
         setupPlaceholderLabel()
         setupIcon()
     }
     
     func setupPlaceholderLabel() {
-        yConstraint = NSLayoutConstraint(item: placeholderLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0)
+        yConstraint = NSLayoutConstraint(item: placeholderLabel,
+                                         attribute: .centerY,
+                                         relatedBy: .equal,
+                                         toItem: self,
+                                         attribute: .centerY,
+                                         multiplier: 1,
+                                         constant: 0)
         
         let titleConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: placeholderLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: leftSpacing),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: leftSpacing),
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .leading,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .leading,
+                               multiplier: 1,
+                               constant: leftSpacing),
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .trailing,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .trailing,
+                               multiplier: 1,
+                               constant: leftSpacing),
             yConstraint!
         ]
         
@@ -178,10 +195,11 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         placeholderLabel.textColor = placeholderColor
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.sizeToFit()
-
+        
         if let fontNameCustom = fontNameCustom {
             if changeFontSizeOnWrite {
-                if let myFont = self.font, let fontCustom = UIFont(name: fontNameCustom, size: myFont.pointSize) {
+                if let myFont = self.font,
+                    let fontCustom = UIFont(name: fontNameCustom, size: myFont.pointSize) {
                     placeholderLabel.font = fontCustom
                 } else {
                     placeholderLabel.font = self.font
@@ -200,103 +218,140 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         if self.text != "" {
             _ = self.textFieldShouldBeginEditing(self)
         }
-
+        
         placeholder = ""
         addSubview(placeholderLabel)
         addConstraints(titleConstraints)
         sendSubviewToBack(placeholderLabel)
     }
-
+    
     func setupIcon() {
         guard let icon = icon else { return }
         let alignConstraint: NSLayoutConstraint
-
+        
         if iconAtTrailing {
-            alignConstraint = NSLayoutConstraint(item: imageViewIcon, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: -iconSpacing)
+            alignConstraint = NSLayoutConstraint(item: imageViewIcon,
+                                                 attribute: .trailing,
+                                                 relatedBy: .equal,
+                                                 toItem: self,
+                                                 attribute: .trailing,
+                                                 multiplier: 1,
+                                                 constant: -iconSpacing)
         } else {
-            alignConstraint = NSLayoutConstraint(item: imageViewIcon, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: iconSpacing)
+            alignConstraint = NSLayoutConstraint(item: imageViewIcon,
+                                                 attribute: .leading,
+                                                 relatedBy: .equal,
+                                                 toItem: self,
+                                                 attribute: .leading,
+                                                 multiplier: 1,
+                                                 constant: iconSpacing)
         }
-
+        
         let titleConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: imageViewIcon, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: imageViewIcon, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: iconWidth),
-            NSLayoutConstraint(item: imageViewIcon, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: iconHeight),
+            NSLayoutConstraint(item: imageViewIcon,
+                               attribute: .centerY,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .centerY,
+                               multiplier: 1,
+                               constant: 0),
+            NSLayoutConstraint(item: imageViewIcon,
+                               attribute: .width,
+                               relatedBy: .equal,
+                               toItem: nil,
+                               attribute: .notAnAttribute,
+                               multiplier: 1,
+                               constant: iconWidth),
+            NSLayoutConstraint(item: imageViewIcon,
+                               attribute: .height,
+                               relatedBy: .equal,
+                               toItem: nil,
+                               attribute: .notAnAttribute,
+                               multiplier: 1,
+                               constant: iconHeight),
             alignConstraint
         ]
-
+        
         imageViewIcon.contentMode = .scaleAspectFit
         imageViewIcon.translatesAutoresizingMaskIntoConstraints = false
         imageViewIcon.sizeToFit()
-
         imageViewIcon.image = icon
-
+        
         addSubview(imageViewIcon)
         addConstraints(titleConstraints)
         sendSubviewToBack(imageViewIcon)
     }
-
+    
     public func setFormatting(_ formattingPattern: String, replacementChar: Character) {
         self.formattingPattern = formattingPattern
         self.replacementChar = replacementChar
         self.formatting = .custom
     }
-
+    
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.layoutIfNeeded()
-
+        
         UIView.animate(withDuration: 0.2, animations: { () -> Void in
             if self.changeFontSizeOnWrite {
-                if let myFont = self.font, let fontCustom = UIFont(name: myFont.familyName, size: self.fontSizeCustom) {
+                if let myFont = self.font,
+                    let fontCustom = UIFont(name: myFont.familyName, size: self.fontSizeCustom) {
                     self.placeholderLabel.font = fontCustom
                 }
             }
-
+            
             self.yConstraint?.constant = -self.topSpacingFromPlaceholder
             self.layoutIfNeeded()
         })
         
         return floatLabelDelegate?.textFieldShouldBeginEditing?(textField) ?? true
     }
-
+    
     public func textFieldDidEndEditing(_ textField: UITextField) {
         if self.text!.count <= 0 {
             self.layoutIfNeeded()
-
+            
             UIView.animate(withDuration: 0.2, animations: { () -> Void in
-
+                
                 if self.changeFontSizeOnWrite {
-                    if let myFont = self.font, let fontCustom = UIFont(name: myFont.familyName, size: myFont.pointSize) {
+                    if let myFont = self.font,
+                        let fontCustom = UIFont(name: myFont.familyName, size: myFont.pointSize) {
                         self.placeholderLabel.font = fontCustom
                     } else {
                         self.placeholderLabel.font = self.font
                     }
                 }
-
+                
                 self.yConstraint?.constant = 0
                 self.layoutIfNeeded()
             })
         }
-
+        
         floatLabelDelegate?.textFieldDidEndEditing?(textField)
     }
-
+    
     override public func textRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + leftSpacing, y: bounds.origin.y + topSpacingFromPlaceholder, width: bounds.width - (rightSpacing), height: bounds.height)
+        return CGRect(x: bounds.origin.x + leftSpacing,
+                      y: bounds.origin.y + topSpacingFromPlaceholder,
+                      width: bounds.width - rightSpacing,
+                      height: bounds.height)
     }
-
+    
     override public func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return CGRect(x: bounds.origin.x + leftSpacing, y: bounds.origin.y + topSpacingFromPlaceholder, width: bounds.width - (rightSpacing), height: bounds.height)
+        return CGRect(x: bounds.origin.x + leftSpacing,
+                      y: bounds.origin.y + topSpacingFromPlaceholder,
+                      width: bounds.width - rightSpacing,
+                      height: bounds.height)
     }
-
+    
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         _ = floatLabelDelegate?.textFieldShouldReturn?(textField)
         return true
     }
-
+    
     @objc public func textDidChange() {
         var superText: String { return super.text ?? "" }
         floatLabelDelegate?.textDidChange?(text: superText)
-
+        
         let currentTextForFormatting: String
         
         if superText.count > _textWithoutSecureBullets.count {
@@ -307,7 +362,7 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         } else {
             currentTextForFormatting = String(_textWithoutSecureBullets[..<_textWithoutSecureBullets.index(_textWithoutSecureBullets.startIndex, offsetBy: superText.count)])
         }
-
+        
         if formatting != .noFormatting && currentTextForFormatting.count > 0 && formattingPattern.count > 0 {
             let tempString = currentTextForFormatting.keepOnlyDigits(isHexadecimal: !onlyNumbers)
             
@@ -391,9 +446,9 @@ class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
     
     @IBInspectable var changeFontSizeOnWrite: Bool = true
     @IBInspectable var hidePlaceholder: Bool = true
-
+    
     @IBOutlet open weak var customDelegate: MFATextViewFloatLabelDelegate?
-
+    
     override public var text : String? {
         didSet {
             if (text == "" || text == nil) {
@@ -403,71 +458,96 @@ class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
             }
         }
     }
-
+    
     var placeholderLabel = UILabel()
     var bottomBorder: UIView = UIView()
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-
+        
         delegate = self
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-
+        
         delegate = self
     }
-
+    
     override func awakeFromNib() {
         self.commonInit()
     }
-
+    
     override func draw(_ rect: CGRect) {
     }
-
+    
     private func commonInit() {
         let titleConstraints: [NSLayoutConstraint] = [
-            NSLayoutConstraint(item: placeholderLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: leftSpacing),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: leftSpacing),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: topSpacing),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .bottom, relatedBy: .greaterThanOrEqual, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0.0)
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .leading,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .leading,
+                               multiplier: 1,
+                               constant: leftSpacing),
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .trailing,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .trailing,
+                               multiplier: 1,
+                               constant: leftSpacing),
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .top,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .top,
+                               multiplier: 1,
+                               constant: topSpacing),
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .bottom,
+                               relatedBy: .greaterThanOrEqual,
+                               toItem: self,
+                               attribute: .bottom,
+                               multiplier: 1,
+                               constant: 0),
+            NSLayoutConstraint(item: placeholderLabel,
+                               attribute: .width,
+                               relatedBy: .equal,
+                               toItem: self,
+                               attribute: .width,
+                               multiplier: 1.0,
+                               constant: 0.0)
         ]
-
+        
         placeholderLabel.numberOfLines = 0
         placeholderLabel.textAlignment = .left
-        placeholderLabel.text = self.placeholderText
-        placeholderLabel.font = self.font
+        placeholderLabel.text = placeholderText
+        placeholderLabel.font = font
         placeholderLabel.textColor = placeholderColor
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.sizeToFit()
         addSubview(placeholderLabel)
         sendSubviewToBack(placeholderLabel)
         addConstraints(titleConstraints)
-
+        
         self.textContainer.lineFragmentPadding = 0
-//        self.textContainerInset = UIEdgeInsets.zero
-        self.textContainerInset = UIEdgeInsets(top: topSpacingFromPlaceholder, left: leftSpacing, bottom: 0, right: rightSpacing)
+        self.textContainerInset = UIEdgeInsets(top: topSpacingFromPlaceholder,
+                                               left: leftSpacing,
+                                               bottom: 0,
+                                               right: rightSpacing)
     }
-
+    
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         customDelegate?.textViewShouldBeginEditing(textView)
         return true
     }
-
+    
     func textViewDidChange(_ textView: UITextView) {
-
-        if textView.text!.count <= 0 {
-            placeholderLabel.alpha = 1
-        } else if hidePlaceholder {
-            placeholderLabel.alpha = 0
-        }
-
+        placeholderLabel.alpha = textView.text!.count <= 0 ? 1 : 0
         customDelegate?.textViewDidChange(textView)
     }
 }
-
 
 extension String {
     
@@ -480,7 +560,6 @@ extension String {
         return allNumbers
     }
 }
-
 
 // Helpers
 private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -504,7 +583,7 @@ private func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 extension UIView {
-
+    
     func addBorder(withColor color: UIColor? = nil, andEdge edge: UIRectEdge = .top, andSize size: CGFloat = 1) -> UIView {
         let border = UIView()
         
@@ -513,38 +592,95 @@ extension UIView {
         switch edge {
         case .top, .bottom:
             titleConstraints = [
-                NSLayoutConstraint(item: border, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: border, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: border, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: size)
+                NSLayoutConstraint(item: border,
+                                   attribute: .leading,
+                                   relatedBy: .equal,
+                                   toItem: self,
+                                   attribute: .leading,
+                                   multiplier: 1,
+                                   constant: 0),
+                NSLayoutConstraint(item: border,
+                                   attribute: .trailing,
+                                   relatedBy: .equal,
+                                   toItem: self,
+                                   attribute: .trailing,
+                                   multiplier: 1,
+                                   constant: 0),
+                NSLayoutConstraint(item: border,
+                                   attribute: .height,
+                                   relatedBy: .equal,
+                                   toItem: nil,
+                                   attribute: .notAnAttribute,
+                                   multiplier: 1,
+                                   constant: size)
             ]
             
             if edge == .top {
-                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0))
+                titleConstraints.append(NSLayoutConstraint(item: border,
+                                                           attribute: .top,
+                                                           relatedBy: .equal,
+                                                           toItem: self,
+                                                           attribute: .top,
+                                                           multiplier: 1,
+                                                           constant: 0))
             } else {
-                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0))
+                titleConstraints.append(NSLayoutConstraint(item: border,
+                                                           attribute: .bottom,
+                                                           relatedBy: .equal,
+                                                           toItem: self,
+                                                           attribute: .bottom,
+                                                           multiplier: 1,
+                                                           constant: 0))
             }
         case .left, .right:
             titleConstraints = [
-                NSLayoutConstraint(item: border, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: border, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1, constant: 0),
-                NSLayoutConstraint(item: border, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: size)
+                NSLayoutConstraint(item: border,
+                                   attribute: .top,
+                                   relatedBy: .equal,
+                                   toItem: self,
+                                   attribute: .top,
+                                   multiplier: 1,
+                                   constant: 0),
+                NSLayoutConstraint(item: border,
+                                   attribute: .bottom,
+                                   relatedBy: .equal,
+                                   toItem: self,
+                                   attribute: .bottom,
+                                   multiplier: 1,
+                                   constant: 0),
+                NSLayoutConstraint(item: border,
+                                   attribute: .width,
+                                   relatedBy: .equal,
+                                   toItem: nil,
+                                   attribute: .notAnAttribute,
+                                   multiplier: 1,
+                                   constant: size)
             ]
             
             if edge == .right {
-                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1, constant: 0))
+                titleConstraints.append(NSLayoutConstraint(item: border,
+                                                           attribute: .trailing,
+                                                           relatedBy: .equal,
+                                                           toItem: self,
+                                                           attribute: .trailing,
+                                                           multiplier: 1,
+                                                           constant: 0))
                 
             } else {
-                titleConstraints.append(NSLayoutConstraint(item: border, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0))
+                titleConstraints.append(NSLayoutConstraint(item: border,
+                                                           attribute: .leading,
+                                                           relatedBy: .equal,
+                                                           toItem: self,
+                                                           attribute: .leading,
+                                                           multiplier: 1,
+                                                           constant: 0))
             }
-        default:
-            break
+        default: break
         }
-        
         
         border.translatesAutoresizingMaskIntoConstraints = false
         addSubview(border)
         addConstraints(titleConstraints)
-        
         border.backgroundColor = color ?? .white
         
         return border
