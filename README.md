@@ -19,6 +19,12 @@ The UI component can be used via the `MFAFloatLabel` or `MFATextViewFloatLabel` 
 
 ![](/Example/MFAFloatLabel/example.gif)
 
+### Delegate
+To use with `UITextFieldDelegate` methods you should implement `MFAFloatLabelDelegate` and set it on your `MFAFloatLabel`.
+```swift
+textField.floatLabelDelegate = self
+```
+
 ### Font
 You can change placeholder font name to be different from the text of your textField. Also change the font size of placeholder when typing.
 ```swift
