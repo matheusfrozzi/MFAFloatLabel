@@ -19,16 +19,16 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
     
     @IBOutlet open weak var floatLabelDelegate: MFAFloatLabelDelegate?
     
-    @IBInspectable var placeholderColor: UIColor = .gray
-    @IBInspectable var topSpacingFromPlaceholder: CGFloat = 6
-    @IBInspectable var leftSpacing: CGFloat = 8
-    @IBInspectable var rightSpacing: CGFloat = 8
+    @IBInspectable public var placeholderColor: UIColor = .gray
+    @IBInspectable public var topSpacingFromPlaceholder: CGFloat = 6
+    @IBInspectable public var leftSpacing: CGFloat = 8
+    @IBInspectable public var rightSpacing: CGFloat = 8
     
-    @IBInspectable var fontNameCustom: String!
-    @IBInspectable var fontSizeCustom: CGFloat = 12
+    @IBInspectable public var placeholderCustomFontName: String!
+    @IBInspectable public var placeholderEditingFontSize: CGFloat = 0
     
-    @IBInspectable var changeFontSizeOnWrite: Bool = false
-    @IBInspectable var addBorder: Bool = false
+    @IBInspectable public var addBorder: Bool = false
+    @IBInspectable public var borderHeight: CGFloat = 1
     @IBInspectable public var borderColor: UIColor = .gray {
         didSet {
             bottomBorder.backgroundColor = borderColor
@@ -40,10 +40,12 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
             imageViewIcon.image = icon
         }
     }
-    @IBInspectable var iconAtTrailing: Bool = true
-    @IBInspectable var iconSpacing: CGFloat = 8
-    @IBInspectable var iconWidth: CGFloat = 12
-    @IBInspectable var iconHeight: CGFloat = 12
+    @IBInspectable public var iconAtTrailing: Bool = true
+    @IBInspectable public var iconSpacing: CGFloat = 8
+    @IBInspectable public var iconWidth: CGFloat = 12
+    @IBInspectable public var iconHeight: CGFloat = 12
+    
+    @IBInspectable public var onlyNumbers: Bool = false
     
     override public var text: String? {
         set {
@@ -62,41 +64,43 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
             }
         }
     }
-    var placeholderNew: String? {
+    private var placeholderNew: String? {
         didSet {
             placeholderLabel.text = placeholderNew
             placeholder = nil
         }
     }
-    var bottomBorder: UIView = UIView()
-    var placeholderLabel = UILabel()
-    var imageViewIcon = UIImageView()
-    
-    var yConstraint: NSLayoutConstraint?
+    private var bottomBorder: UIView = UIView()
+    private var placeholderLabel = UILabel()
+    private var imageViewIcon = UIImageView()
+    private var yConstraint: NSLayoutConstraint?
+    private var customSize: CGFloat? { return placeholderEditingFontSize == 0 ? nil : placeholderEditingFontSize }
     
     // MASK
-    public enum TextFieldFormatting {
+    private enum TextFieldFormatting {
         case custom
         case noFormatting
     }
     
-    public var formattingPattern: String = "" {
+    private var formattingPattern: String = "" {
         didSet {
             self.maxLength = formattingPattern.count
         }
     }
     
-    public var replacementChar: Character = "*"
-    public var secureTextReplacementChar: Character = "\u{25cf}"
-    @IBInspectable public var onlyNumbers: Bool = false
-    public var maxLength = 0
-    public var formatting : TextFieldFormatting = .noFormatting {
+    private var replacementChar: Character = "*"
+    private var secureTextReplacementChar: Character = "\u{25cf}"
+    private var maxLength = 0
+    private var formatting : TextFieldFormatting = .noFormatting {
         didSet {
             switch formatting {
             default:
                 self.maxLength = 0
             }
         }
+    }
+    private var finalStringWithoutFormatting : String {
+        return _textWithoutSecureBullets.keepOnlyDigits(isHexadecimal: !onlyNumbers)
     }
     public var formatedSecureTextEntry: Bool {
         set {
@@ -108,19 +112,10 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         }
     }
     
-    deinit {
-        print("deinit")
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    public var finalStringWithoutFormatting : String {
-        return _textWithoutSecureBullets.keepOnlyDigits(isHexadecimal: !onlyNumbers)
-    }
-    
     // MARK: - INTERNAL
-    fileprivate var _formatedSecureTextEntry = false
-    fileprivate var _textWithoutSecureBullets = ""
-    fileprivate func registerForNotifications() {
+    private var _formatedSecureTextEntry = false
+    private var _textWithoutSecureBullets = ""
+    private func registerForNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(textDidChange),
                                                name: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"),
@@ -141,16 +136,20 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         registerForNotifications()
     }
     
+    deinit {
+        print("deinit")
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override public func awakeFromNib() {
         self.commonInit()
     }
     
-    override public func draw(_ rect: CGRect) {
-    }
+    override public func draw(_ rect: CGRect) {}
     
     private func commonInit() {
         if addBorder {
-            bottomBorder = self.addBorder(withColor: borderColor, andEdge: .bottom)
+            bottomBorder = self.addBorder(withColor: borderColor, andEdge: .bottom, andSize: borderHeight)
         }
         
         if self.placeholder != nil {
@@ -161,7 +160,7 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         setupIcon()
     }
     
-    func setupPlaceholderLabel() {
+    private func setupPlaceholderLabel() {
         yConstraint = NSLayoutConstraint(item: placeholderLabel,
                                          attribute: .centerY,
                                          relatedBy: .equal,
@@ -196,23 +195,9 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderLabel.sizeToFit()
         
-        if let fontNameCustom = fontNameCustom {
-            if changeFontSizeOnWrite {
-                if let myFont = self.font,
-                    let fontCustom = UIFont(name: fontNameCustom, size: myFont.pointSize) {
-                    placeholderLabel.font = fontCustom
-                } else {
-                    placeholderLabel.font = self.font
-                }
-            } else {
-                if let fontCustom = UIFont(name: fontNameCustom, size: fontSizeCustom) {
-                    placeholderLabel.font = fontCustom
-                }
-            }
-        } else {
-            placeholderLabel.font = self.font
-        }
-        
+        let fontSize = self.font?.pointSize ?? UIFont.systemFontSize
+        let fontName = placeholderCustomFontName ?? self.font?.familyName ?? UIFont.systemFont(ofSize: 12).familyName
+        placeholderLabel.font = UIFont(name: fontName, size: fontSize)
         placeholderLabel.textColor = placeholderColor
         
         if self.text != "" {
@@ -225,7 +210,7 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
         sendSubviewToBack(placeholderLabel)
     }
     
-    func setupIcon() {
+    private func setupIcon() {
         guard let icon = icon else { return }
         let alignConstraint: NSLayoutConstraint
         
@@ -291,17 +276,14 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         self.layoutIfNeeded()
         
-        UIView.animate(withDuration: 0.2, animations: { () -> Void in
-            if self.changeFontSizeOnWrite {
-                if let myFont = self.font,
-                    let fontCustom = UIFont(name: myFont.familyName, size: self.fontSizeCustom) {
-                    self.placeholderLabel.font = fontCustom
-                }
-            }
+        UIView.animate(withDuration: 0.2) {
+            let fontSize = self.customSize ?? self.font?.pointSize ?? UIFont.systemFontSize
+            let fontName = self.placeholderCustomFontName ?? self.font?.familyName ?? UIFont.systemFont(ofSize: 12).familyName
+            self.placeholderLabel.font = UIFont(name: fontName, size: fontSize)
             
             self.yConstraint?.constant = -self.topSpacingFromPlaceholder
             self.layoutIfNeeded()
-        })
+        }
         
         return floatLabelDelegate?.textFieldShouldBeginEditing?(textField) ?? true
     }
@@ -311,15 +293,9 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
             self.layoutIfNeeded()
             
             UIView.animate(withDuration: 0.2, animations: { () -> Void in
-                
-                if self.changeFontSizeOnWrite {
-                    if let myFont = self.font,
-                        let fontCustom = UIFont(name: myFont.familyName, size: myFont.pointSize) {
-                        self.placeholderLabel.font = fontCustom
-                    } else {
-                        self.placeholderLabel.font = self.font
-                    }
-                }
+                let fontSize = self.font?.pointSize ?? UIFont.systemFontSize
+                let fontName = self.placeholderCustomFontName ?? self.font?.familyName ?? UIFont.systemFont(ofSize: 12).familyName
+                self.placeholderLabel.font = UIFont(name: fontName, size: fontSize)
                 
                 self.yConstraint?.constant = 0
                 self.layoutIfNeeded()
@@ -429,23 +405,23 @@ public class MFAFloatLabel: UITextField, UITextFieldDelegate {
 
 class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
     
-    @IBInspectable var placeholderText: String = "" {
+    @IBInspectable public var placeholderText: String = "" {
         didSet {
             placeholderLabel.text = placeholderText
         }
     }
     
-    @IBInspectable var placeholderColor: UIColor = .gray
-    @IBInspectable var topSpacing: CGFloat = 6
-    @IBInspectable var topSpacingFromPlaceholder: CGFloat = 6
-    @IBInspectable var leftSpacing: CGFloat = 8
-    @IBInspectable var rightSpacing: CGFloat = 8
+    @IBInspectable public var placeholderColor: UIColor = .gray
+    @IBInspectable public var topSpacing: CGFloat = 6
+    @IBInspectable public var topSpacingFromPlaceholder: CGFloat = 6
+    @IBInspectable public var leftSpacing: CGFloat = 8
+    @IBInspectable public var rightSpacing: CGFloat = 8
     
-    @IBInspectable var fontNameCustom: String!
-    @IBInspectable var fontSizeCustom: CGFloat = 12
+    @IBInspectable public var fontNameCustom: String!
+    @IBInspectable public var fontSizeCustom: CGFloat = 12
     
-    @IBInspectable var changeFontSizeOnWrite: Bool = true
-    @IBInspectable var hidePlaceholder: Bool = true
+    @IBInspectable public var changeFontSizeOnWrite: Bool = true
+    @IBInspectable public var hidePlaceholder: Bool = true
     
     @IBOutlet open weak var customDelegate: MFATextViewFloatLabelDelegate?
     
@@ -459,8 +435,8 @@ class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
         }
     }
     
-    var placeholderLabel = UILabel()
-    var bottomBorder: UIView = UIView()
+    private var placeholderLabel = UILabel()
+    private var bottomBorder: UIView = UIView()
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -478,8 +454,7 @@ class MFATextViewFloatLabel: UITextView, UITextViewDelegate {
         self.commonInit()
     }
     
-    override func draw(_ rect: CGRect) {
-    }
+    override func draw(_ rect: CGRect) {}
     
     private func commonInit() {
         let titleConstraints: [NSLayoutConstraint] = [

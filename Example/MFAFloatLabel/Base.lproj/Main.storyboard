@@ -21,16 +21,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Teste" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aRP-OC-58t" customClass="MFAFloatLabel" customModule="MFAFloatLabel">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aRP-OC-58t" customClass="MFAFloatLabel" customModule="MFAFloatLabel">
                                 <rect key="frame" x="20" y="104" width="335" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="YIL-Pe-8PF"/>
                                 </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="changeFontSizeOnWrite" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="addBorder" value="YES"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                         <color key="value" red="0.47045988350000001" green="0.72941176470000002" blue="0.15875479249999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -55,7 +54,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="changeFontSizeOnWrite" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="addBorder" value="YES"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
                                         <color key="value" red="0.47045988350000001" green="0.72941176470000002" blue="0.15875479249999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -93,7 +91,6 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="rightSpacing">
                                         <real key="value" value="26"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="changeFontSizeOnWrite" value="YES"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="topSpacingFromPlaceholder">
                                         <real key="value" value="9"/>
                                     </userDefinedRuntimeAttribute>

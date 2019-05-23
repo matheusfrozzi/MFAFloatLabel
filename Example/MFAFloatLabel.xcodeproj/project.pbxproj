@@ -14,6 +14,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		BEF5E9D922974C1B00EAC0C2 /* example.gif in Resources */ = {isa = PBXBuildFile; fileRef = BEF5E9D822974C1B00EAC0C2 /* example.gif */; };
 		D073FA74929E6164C26EF013 /* Pods_MFAFloatLabel_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FB7F24903AA829A569A7C27 /* Pods_MFAFloatLabel_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,7 @@
 		6C9F2CBEF5C4038812697354 /* Pods-MFAFloatLabel_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFAFloatLabel_Tests.debug.xcconfig"; path = "Target Support Files/Pods-MFAFloatLabel_Tests/Pods-MFAFloatLabel_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		860201077626C890733BBCB7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		993A2657F3364EBB1F18FDD0 /* MFAFloatLabel.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = MFAFloatLabel.podspec; path = ../MFAFloatLabel.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BEF5E9D822974C1B00EAC0C2 /* example.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = example.gif; sourceTree = "<group>"; };
 		E10B477D2BE3C911FF5A0D69 /* Pods-MFAFloatLabel_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MFAFloatLabel_Tests.release.xcconfig"; path = "Target Support Files/Pods-MFAFloatLabel_Tests/Pods-MFAFloatLabel_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		ED458EEE5F3426B9AC26F9ED /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +104,7 @@
 		607FACD21AFB9204008FA782 /* Example for MFAFloatLabel */ = {
 			isa = PBXGroup;
 			children = (
+				BEF5E9D822974C1B00EAC0C2 /* example.gif */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
@@ -246,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
+				BEF5E9D922974C1B00EAC0C2 /* example.gif in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
