@@ -26,7 +26,7 @@ textField.floatLabelDelegate = self
 ```
 
 ### Font
-You can change placeholder font name to be different from the text of your textField. Also change the font size of placeholder when typing.
+You can customize the placeholder of your textField by changing the font name and size.
 ```swift
 textField.placeholderCustomFontName = "Menlo"
 textField.placeholderEditingFontSize = 10
